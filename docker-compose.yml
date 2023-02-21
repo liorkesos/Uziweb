@@ -1,0 +1,33 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+#    labels:
+#      traefik.enable: 'true'
+#      traefik.backend: app
+#      traefik.port: '5000'
+#      traefik.frontend.rule: Host:
+#      traefik.domain:
+#      traefik.frontend.protocol: https
+#      traefik.frontend.redirect.entryPoint: https
+#      traefik.frontend.redirect.permanent: 'true'
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  traefik:
+    extends:
+      file: hossted/hossted-traefik.yml
+      service: hossted-traefik
+
+
+volumes:
+  db-data:
